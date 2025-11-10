@@ -103,6 +103,7 @@ export class ViewComponent {
     this.service.saveComment(comment).subscribe({
       next: (response) => {
         this.succes('Comentario guardado correctamente')
+        this.ngOnInit()
       },
       error: (err) => {
         this.error(err.error.mesage)
