@@ -1,0 +1,200 @@
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-600 to-violet-600 text-white shadow-xl">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Brand -->
+      <a routerLink="/" class="group flex items-center gap-3">
+        <span
+          class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/15 backdrop-blur transition group-hover:bg-white/25">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 4h14a1 1 0 0 1 1 1v14l-5-3-5 3-5-3-1 .6V5a1 1 0 0 1 1-1z" />
+          </svg>
+        </span>
+        <span class="text-2xl font-semibold tracking-tight">MyBlog</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-1">
+        <!-- Público -->
+        <a routerLink="/blog/view" routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Main
+        </a>
+
+        <!-- ADMIN o PERIODISTA -->
+        <a *ngIf="auth.hasType([TypeUser.ADMIN, TypeUser.PERIODISTA])" routerLink="/blog/create"
+          routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Nuevo Blog
+        </a>
+
+        <!-- Solo ADMIN -->
+        <a *ngIf="auth.hasType(TypeUser.ADMIN)" routerLink="/blog/user-create"
+          routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Crear Usuario
+        </a>
+
+        <!-- Logueados -->
+        <a *ngIf="isLoggedIn" routerLink="/blog/myprofile" routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Mi Perfil
+        </a>
+
+        <a *ngIf="isLoggedIn" routerLink="/blog/myBlogs" routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Mis Blogs
+        </a>
+
+        <a *ngIf="isLoggedIn" routerLink="/blog/friendrequest" routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Solicitudes
+        </a>
+
+        <a *ngIf="isLoggedIn" routerLink="/blog/shared" routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Guardados
+        </a>
+        <a *ngIf="isLoggedIn" routerLink="/blog/notificaciones" routerLinkActive="bg-white/20 text-yellow-200"
+          (click)="isOpen=false"
+          class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Notificaciones</a>
+
+        <!-- ADMIN o PERIODISTA -->
+        <a *ngIf="auth.hasType([TypeUser.ADMIN])" routerLink="/blog/accept"
+          routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Aceptar
+        </a>
+
+        <!-- Solo ADMIN -->
+        <a *ngIf="auth.hasType(TypeUser.ADMIN)" routerLink="/blog/ban" routerLinkActive="bg-white/10 text-yellow-200"
+          class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition">
+          Gestión de Usuarios
+        </a>
+
+        <!-- Acción (Login/Logout) -->
+        <button *ngIf="isLoggedIn; else loginBtn" type="button" (click)="logout()"
+          class="ml-2 inline-flex items-center gap-2 rounded-xl bg-white/15 px-3 py-2 text-sm font-semibold hover:bg-white/25 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 3a1 1 0 0 0-1 1v3h2V5h8v14h-8v-2H9v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H10z" />
+            <path
+              d="M13 12a1 1 0 0 0-1-1H5.41l1.3-1.29a1 1 0 1 0-1.42-1.42L2.3 10.29a1 1 0 0 0 0 1.42l3 3a1 1 0 1 0 1.42-1.42L5.41 13H12a1 1 0 0 0 1-1z" />
+          </svg>
+          Salir
+        </button>
+        <div class="relative group">
+          <button type="button"
+            class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 transition"
+            aria-haspopup="menu" aria-expanded="false">
+            Más
+            <svg class="h-4 w-4 opacity-90" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Menú -->
+          <div class="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl bg-white text-gray-800 shadow-lg ring-1 ring-black/5
+           opacity-0 translate-y-1 pointer-events-none transition
+           group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto
+           group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
+            role="menu" aria-label="Más opciones">
+            <a href="https://frontend-aid-events.vercel.app/user" target="_blank" rel="noopener noreferrer"
+              class="block px-4 py-2 text-sm hover:bg-gray-50" role="menuitem">
+              Eventos
+            </a>
+
+            <a href="http://alertas-ms-front.s3-website-us-east-1.amazonaws.com/" target="_blank" rel="noopener noreferrer"
+              class="block px-4 py-2 text-sm hover:bg-gray-50" role="menuitem">
+              Alertas
+            </a>
+          </div>
+        </div>
+        <ng-template #loginBtn>
+          <a routerLink="/auth/login"
+            class="ml-2 inline-flex items-center gap-2 rounded-xl bg-white/15 px-3 py-2 text-sm font-semibold hover:bg-white/25 transition">
+            Login
+          </a>
+        </ng-template>
+      </div>
+
+      <!-- Mobile button -->
+      <button type="button"
+        class="md:hidden inline-flex items-center justify-center rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+        (click)="isOpen = !isOpen" aria-controls="mobile-menu" [attr.aria-expanded]="isOpen">
+        <svg *ngIf="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <svg *ngIf="isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden origin-top transform transition-all duration-200 ease-out"
+    [class.scale-y-100]="isOpen" [class.opacity-100]="isOpen" [class.pointer-events-auto]="isOpen"
+    [class.scale-y-0]="!isOpen" [class.opacity-0]="!isOpen" [class.pointer-events-none]="!isOpen">
+    <div class="space-y-1 px-4 pb-4 pt-2 bg-white/10 backdrop-blur-lg border-t border-white/10">
+      <!-- Público -->
+      <a routerLink="/blog/view" routerLinkActive="bg-white/20 text-yellow-200" (click)="isOpen=false"
+        class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">
+        Main
+      </a>
+
+      <!-- ADMIN o PERIODISTA -->
+      <a *ngIf="auth.hasType([TypeUser.ADMIN, TypeUser.PERIODISTA,TypeUser.COMUN])" routerLink="/blog/create"
+        routerLinkActive="bg-white/20 text-yellow-200" (click)="isOpen=false"
+        class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Nuevo Blog</a>
+
+      <!-- Solo ADMIN -->
+      <a *ngIf="auth.hasType(TypeUser.ADMIN)" routerLink="/blog/user-create"
+        routerLinkActive="bg-white/20 text-yellow-200" (click)="isOpen=false"
+        class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Crear Usuario</a>
+
+      <!-- Logueados -->
+      <a *ngIf="isLoggedIn" routerLink="/blog/myprofile" routerLinkActive="bg-white/20 text-yellow-200"
+        (click)="isOpen=false" class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Mi Perfil</a>
+
+      <a *ngIf="isLoggedIn" routerLink="/blog/myBlogs" routerLinkActive="bg-white/20 text-yellow-200"
+        (click)="isOpen=false" class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Mis Blogs</a>
+
+      <a *ngIf="isLoggedIn" routerLink="/blog/friendrequest" routerLinkActive="bg-white/20 text-yellow-200"
+        (click)="isOpen=false" class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Solicitudes</a>
+
+      <a *ngIf="isLoggedIn" routerLink="/blog/shared" routerLinkActive="bg-white/20 text-yellow-200"
+        (click)="isOpen=false" class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Guardados</a>
+
+      <a *ngIf="isLoggedIn" routerLink="/blog/notificaciones" routerLinkActive="bg-white/20 text-yellow-200"
+        (click)="isOpen=false"
+        class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Notificaciones</a>
+
+      <!-- ADMIN o PERIODISTA -->
+      <a *ngIf="auth.hasType([TypeUser.ADMIN, TypeUser.PERIODISTA])" routerLink="/blog/accept"
+        routerLinkActive="bg-white/20 text-yellow-200" (click)="isOpen=false"
+        class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Aceptar</a>
+
+      <!-- Solo ADMIN -->
+      <a *ngIf="auth.hasType(TypeUser.ADMIN)" routerLink="/blog/ban" routerLinkActive="bg-white/20 text-yellow-200"
+        (click)="isOpen=false" class="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/15">Gestión de
+        Usuarios</a>
+
+      <!-- Acción -->
+      <button *ngIf="isLoggedIn; else loginBtnM" type="button" (click)="logout(); isOpen=false"
+        class="mt-2 w-full rounded-lg bg-white/15 px-3 py-2 text-left text-sm font-semibold hover:bg-white/25">
+        Salir
+      </button>
+      <ng-template #loginBtnM>
+        <a routerLink="/auth/login" (click)="isOpen=false"
+          class="mt-2 block w-full rounded-lg bg-white/15 px-3 py-2 text-left text-sm font-semibold hover:bg-white/25">
+          Login
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

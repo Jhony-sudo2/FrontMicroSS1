@@ -1,0 +1,69 @@
+<div class="max-w-lg mx-auto bg-white shadow-md rounded-2xl p-6 mt-10">
+  <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Registro de Usuario</h2>
+
+  <form (ngSubmit)="onSubmit()" #userForm="ngForm" class="space-y-4">
+
+    <div>
+      <label class="block text-gray-700">Nombre</label>
+      <input type="text" [(ngModel)]="user.name" name="name" required
+             class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400" />
+    </div>
+
+    <div>
+      <label class="block text-gray-700">Email</label>
+      <input type="email" [(ngModel)]="user.email" name="email" required
+             class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400" />
+    </div>
+
+    <div>
+      <label class="block text-gray-700">Profesión</label>
+      <input type="text" [(ngModel)]="user.profession" name="profession"
+             class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400" />
+    </div>
+
+    <div>
+      <label class="block text-gray-700">Dirección</label>
+      <input type="text" [(ngModel)]="user.address" name="address"
+             class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400" />
+    </div>
+
+    <div>
+      <label class="block text-gray-700">Género</label>
+      <select [(ngModel)]="user.gender" name="gender"
+              class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+        <option [ngValue]="true">Masculino</option>
+        <option [ngValue]="false">Femenino</option>
+      </select>
+    </div>
+
+    <div *ngIf="view">
+      <label class="block text-gray-700">Tipo de Usuario</label>
+      <select [(ngModel)]="user.type" name="type"
+              class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+        <option *ngFor="let t of typeUserValues" [ngValue]="t">{{ t }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-gray-700">Posición Política</label>
+      <select [(ngModel)]="user.politicalPosition" name="politicalPosition"
+              class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+        <option *ngFor="let p of politicalPositions" [ngValue]="p">{{ p }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-gray-700">Contraseña</label>
+      <input type="password" [(ngModel)]="user.password" name="password" required
+             class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400" />
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <button type="submit" [disabled]="!userForm.form.valid"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        Registrar
+      </button>
+    </div>
+
+  </form>
+</div>
